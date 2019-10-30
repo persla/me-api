@@ -1,7 +1,7 @@
 const db = require("../db/database.js");
 
 const reports = {
-    
+
     getReports: function(res) {
         db.all("SELECT * FROM reports",
         (err, rows) => {
@@ -20,6 +20,23 @@ const reports = {
         });
     },
 
+    getReport: function(res, reportId) {
+        db.get("SELECT * FROM reports" +
+            " WHERE reportId = ?",
+        reportId, (err, report) => {
+            if (err) {
+                return res.status(500).json({
+                    errors: {
+                        status: 500,
+                        source: "/report/" + reportId,
+                        title: "Database error",
+                        detail: err.message
+                    }
+                });
+            }
+            return res.json( { data: report } );
+            });
+        },
 
     addReport: function(res, body) {
         db.run("INSERT INTO reports (name, description, texten) VALUES (?, ?, ?)",
@@ -31,7 +48,7 @@ const reports = {
                 return res.status(500).json({
                     errors: {
                         status: 500,
-                        source: "POST /order",
+                        source: "POST /reports",
                         title: "Database error",
                         detail: err.message
                     }
@@ -39,7 +56,7 @@ const reports = {
             }
 
             return res.json({
-                
+
                 data: {
                     type: "success",
                     message: "Your report has been added",
@@ -51,25 +68,20 @@ const reports = {
         });
     },
 
-    updateOrder: function(res, body) {
+    updateReport: function(res, body) {
+        console.log(body);
         if (Number.isInteger(parseInt(body.id))) {
-            db.run("UPDATE reports SET customerName = ?," +
-                " customerAddress = ?, customerZip = ?," +
-                " customerCity = ?, customerCountry = ?, statusId = ?" +
-                " WHERE apiKey = ? AND ROWID = ?",
+            console.log(body);
+            db.run("UPDATE reports SET name = ?, description = ?, texten = ? WHERE id = ?",
             body.name,
-            body.address,
-            body.zip,
-            body.city,
-            body.country,
-            body.status_id || 100,
-            body.api_key,
+            body.description,
+            body.texten,
             body.id, (err) => {
                 if (err) {
                     return res.status(500).json({
                         errors: {
                             status: 500,
-                            source: "PUT /order",
+                            source: "PUT /reports",
                             title: "Database error",
                             detail: err.message
                         }
@@ -82,7 +94,7 @@ const reports = {
             return res.status(400).json({
                 errors: {
                     status: 400,
-                    detail: "Required attribute order id (id) " +
+                    detail: "Required attribute reports id (id) " +
                         " was not included in the request."
                 }
             });

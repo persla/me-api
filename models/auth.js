@@ -20,7 +20,6 @@ const auth = {
     login: function(res, body) {
         const email = body.email;
         const password = body.password;
-        const apiKey = body.api_key;
 
         if (!email || !password) {
             return res.status(401).json({
@@ -33,8 +32,7 @@ const auth = {
             });
         }
 
-        db.get("SELECT * FROM users WHERE apiKey = ? AND email = ?",
-            apiKey,
+        db.get("SELECT * FROM users WHERE email = ?",
             email,
             (err, rows) => {
                 if (err) {
@@ -74,7 +72,7 @@ const auth = {
                     }
 
                     if (result) {
-                        let payload = { api_key: user.apiKey, email: user.email };
+                        let payload = {email: user.email };
                         // let jwtToken = jwt;
                         let  token = jwt.sign({ foo: 'bar' }, 'shhhhh');
                         return res.json({
@@ -103,9 +101,12 @@ const auth = {
 
         // // const sqlite3 = require('sqlite3').verbose();
         // const db = new sqlite3.Database('../db/orders.sqlite');
+        const name = body.name;
         const email = body.email;
         const password = body.password;
-        const apiKey = body.api_key;
+        const year = body.year;
+        const month = body.month;
+        const day = body.day;
 
         if (!email || !password) {
             return res.status(401).json({
@@ -130,16 +131,19 @@ const auth = {
                 });
             }
 
-            db.run("INSERT INTO users (apiKey, email, password) VALUES (?, ?, ?)",
-                apiKey,
+            db.run("INSERT INTO users (name, email, year, month, day, password) VALUES (?, ?, ?, ?, ?, ?)",
+                name,
                 email,
+                year,
+                month,
+                day,
                 hash, (err) => {
                     if (err) {
                         return res.status(500).json({
                             errors: {
                                 status: 500,
                                 source: "/register",
-                                title: "Database error",
+                                title: "Database error här",
                                 detail: err.message
                             }
                         });
