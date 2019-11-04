@@ -41,8 +41,8 @@ const reports = {
     addReport: function(res, body) {
         db.run("INSERT INTO reports (name, description, texten) VALUES (?, ?, ?)",
         body.name,
-        body.texten,
         body.description,
+        body.texten,
         function(err) {
             if (err) {
                 return res.status(500).json({
