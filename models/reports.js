@@ -9,7 +9,7 @@ const reports = {
                 return res.status(500).json({
                     errors: {
                         status: 500,
-                        source: "/invoices",
+                        source: "/reports",
                         title: "Database error",
                         detail: err.message
                     }
@@ -100,7 +100,7 @@ const reports = {
             });
         }
     },
-    
+
 
     // deleteOrder: function(res, body) {
     //     if (Number.isInteger(parseInt(body.id))) {
