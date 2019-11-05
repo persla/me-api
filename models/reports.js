@@ -100,6 +100,7 @@ const reports = {
             });
         }
     },
+    
 
     // deleteOrder: function(res, body) {
     //     if (Number.isInteger(parseInt(body.id))) {
