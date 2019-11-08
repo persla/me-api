@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "pretest": "cd db && bash ./reset_test_db.bash",
+    "test": "nyc --reporter=html --reporter=text --reporter=clover mocha --timeout 10000 'test/**/*.js'",
+    "clean": "rm -rf node_modules package-lock.json",
+    "start": "node app.js",
+    "production": "NODE_ENV='production' node app.js"
   },
   "author": "",
   "license": "ISC",
@@ -19,5 +22,11 @@
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
     "sqlite3": "^4.1.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^6.2.2",
+    "nyc": "^14.1.1"
   }
 }

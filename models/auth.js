@@ -175,7 +175,7 @@ const auth = {
                 }
 
                 req.user = {};
-                req.user.api_key = decoded.api_key;
+                // req.user.api_key = decoded.api_key;
                 req.user.email = decoded.email;
 
                 next();

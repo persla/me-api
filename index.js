@@ -19,10 +19,10 @@ const reports = require("./route/reports.js");
 
 router.get('/', (req, res) => res.sendFile(path.join(__dirname + '/documentation.html')));
 
+router.use("/me", me);
 router.use("/auth", auth);
 router.use("/register", register);
 router.use("/login", login);
-router.use("/me", me);
 router.use("/reports", reports);
 
 // router.use("/copier", copier);

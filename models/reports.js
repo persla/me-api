@@ -20,23 +20,23 @@ const reports = {
         });
     },
 
-    getReport: function(res, reportId) {
-        db.get("SELECT * FROM reports" +
-            " WHERE reportId = ?",
-        reportId, (err, report) => {
-            if (err) {
-                return res.status(500).json({
-                    errors: {
-                        status: 500,
-                        source: "/report/" + reportId,
-                        title: "Database error",
-                        detail: err.message
-                    }
-                });
-            }
-            return res.json( { data: report } );
-            });
-        },
+    // getReport: function(res, reportId) {
+    //     db.get("SELECT * FROM reports" +
+    //         " WHERE reportId = ?",
+    //     reportId, (err, report) => {
+    //         if (err) {
+    //             return res.status(500).json({
+    //                 errors: {
+    //                     status: 500,
+    //                     source: "/report/" + reportId,
+    //                     title: "Database error",
+    //                     detail: err.message
+    //                 }
+    //             });
+    //         }
+    //         return res.json( { data: report } );
+    //         });
+    //     },
 
     addReport: function(res, body) {
         db.run("INSERT INTO reports (name, description, texten) VALUES (?, ?, ?)",
@@ -69,9 +69,9 @@ const reports = {
     },
 
     updateReport: function(res, body) {
-        console.log(body);
+        // console.log(body);
         if (Number.isInteger(parseInt(body.id))) {
-            console.log(body);
+            // console.log(body);
             db.run("UPDATE reports SET name = ?, description = ?, texten = ? WHERE id = ?",
             body.name,
             body.description,
@@ -87,8 +87,18 @@ const reports = {
                         }
                     });
                 }
+                return res.json({
 
-                return res.status(204).send();
+                    data: {
+                        type: "success",
+                        message: "Your report has been revidated",
+                        week: body.name,
+                        description: body.description,
+                        texten: body.texten,
+                    }
+                });
+                // return res.json( { data: report } );
+                // return res.status(204).send();
             });
         } else {
             return res.status(400).json({
@@ -101,50 +111,6 @@ const reports = {
         }
     },
 
-
-    // deleteOrder: function(res, body) {
-    //     if (Number.isInteger(parseInt(body.id))) {
-    //         db.run("DELETE FROM reports WHERE apiKey = ? AND ROWID = ?",
-    //             body.api_key,
-    //             body.id, (err) => {
-    //                 if (err) {
-    //                     return res.status(500).json({
-    //                         errors: {
-    //                             status: 500,
-    //                             source: "DELETE /order",
-    //                             title: "Database error",
-    //                             detail: err.message
-    //                         }
-    //                     });
-    //                 }
-    //
-    //                 db.run("DELETE FROM order_items WHERE apiKey = ? AND orderId = ?",
-    //                     body.api_key,
-    //                     body.id, (err) => {
-    //                         if (err) {
-    //                             return res.status(500).json({
-    //                                 errors: {
-    //                                     status: 500,
-    //                                     source: "DELETE /order order_items",
-    //                                     title: "Database error",
-    //                                     detail: err.message
-    //                                 }
-    //                             });
-    //                         }
-    //
-    //                         return res.status(204).send();
-    //                     });
-    //             });
-    //     } else {
-    //         return res.status(400).json({
-    //             errors: {
-    //                 status: 400,
-    //                 detail: "Required attribute order id (id) " +
-    //                     " was not included in the request."
-    //             }
-    //         });
-    //     }
-    // }
 };
 
 module.exports = reports;
