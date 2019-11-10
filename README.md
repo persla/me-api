@@ -1,6 +1,6 @@
 # me-api
 
-An api for the course js framework at BTH
+Api for the course js framework at BTH
 
 ## Badges
 
